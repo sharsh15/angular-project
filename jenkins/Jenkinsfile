@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        Angular_PATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\angular-build\\angular-project\\sample-angular-17-project\\'
-        Docker_PATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\angular-build\\angular-project\\docker\\'
+        Base_PATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\angular-build\\angular-project\\sample-angular-17-project\\'
     }
 
     tools {
@@ -24,7 +23,7 @@ pipeline {
         stage("Installing dependencies") {
             steps {
                 bat """
-                    cd ${env.Angular_PATH}
+                    cd ${env.Base_PATH}
                     npm install
                     npm --version
                 """
@@ -35,7 +34,7 @@ pipeline {
         stage("Building Angular App") {
             steps {
                  bat """
-                    cd ${env.Angular_PATH} && npx ng build
+                    cd ${env.Base_PATH} && npx ng build
                 """
                 echo "Angular app successfully completed"
             }
@@ -44,7 +43,7 @@ pipeline {
         stage("Dockerizing the angular app") {
             steps {
                 bat """
-                    cd ${env.Docker_PATH}
+                    cd ${env.Base_PATH}
                     docker build -t angular-app .
                 """
                 echo "Docker image built"
