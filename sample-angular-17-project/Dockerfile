@@ -1,14 +1,20 @@
-# Base image: Nginx
+# Stage 1: Build the Angular application
+FROM node:18-alpine as build-stage
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build -- --configuration production
+
+# Stage 2: Serve the application with Nginx
 FROM nginx:alpine
 
-# Remove default files
-RUN rm -rf /usr/share/nginx/html/*
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /app/dist/sample-angular-17-project/browser /usr/share/nginx/html
 
-# Copy your pre-built Angular files into Nginx web directory
-COPY dist/sample-angular-17-project /usr/share/nginx/html
-
-# Expose port 80 for the web
 EXPOSE 80
 
-# Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
