@@ -34,7 +34,7 @@ pipeline {
         stage("Building Angular App") {
             steps {
                  bat """
-                    cd ${env.Base_PATH} && npx ng build
+                    cd ${env.Base_PATH} && "npx ng build --configuration production
                 """
                 echo "Angular app successfully completed"
             }
@@ -44,9 +44,27 @@ pipeline {
             steps {
                 bat """
                     cd ${env.Base_PATH}
-                    docker build -t angular-app .
+                    docker build -t harsh1510/angular-app:version1 .
                 """
                 echo "Docker image built"
+            }
+        }
+
+        stage("Docker Hub Login") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+                    echo "Logging into Docker Hub"
+                    bat """
+                        echo %DOCKERHUB_PASS% | docker login -u %DOCKERHUB_USER% --password-stdin
+                    """
+                }
+            }
+        }
+
+        stage("pushing the docker image to docker hub") {
+            teps {
+                echo "Pushing Docker image to Docker Hub"
+                bat "docker push harsh1510/angular-app"
             }
         }
     }
