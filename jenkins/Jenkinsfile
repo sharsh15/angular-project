@@ -34,7 +34,7 @@ pipeline {
         stage("Building Angular App") {
             steps {
                  bat """
-                    cd ${env.Base_PATH} && "npx ng build --configuration production
+                    cd ${env.Base_PATH} && npx ng build --configuration production
                 """
                 echo "Angular app successfully completed"
             }
