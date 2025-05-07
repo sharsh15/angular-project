@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        BASE_PATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\angular-build\\angular-project\\'
+    }
+
+    tools {
+        nodejs 'nodejs-lts'
+    }
+
+    stages {
+        stage("Pulling code from Github") {
+            steps {
+                script {
+                    deleteDir()
+                    bat "git clone https://github.com/sharsh15/angular-project.git"
+                }
+                echo "Cloned repository successfully."
+            }
+        }
+
+        stage("Installing dependencies") {
+            steps {
+                bat """
+                    cd ${env.BASE_PATH}
+                    npm install
+                    npm --version
+                """
+            }
+        }
+
+        stage("Building Angular App") {
+            steps {
+                 bat """
+                    cd ${env.BASE_PATH} && npx ng build
+                """
+            }
+        }
+
+        stage("Dockerizing the angular app") {
+            steps {
+                bat """
+                    cd ${env.BASE_PATH}
+                """
+            }
+        }
+    }
+}
