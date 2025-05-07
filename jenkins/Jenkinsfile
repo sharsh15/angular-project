@@ -62,7 +62,7 @@ pipeline {
         }
 
         stage("pushing the docker image to docker hub") {
-            teps {
+            steps {
                 echo "Pushing Docker image to Docker Hub"
                 bat "docker push harsh1510/angular-app"
             }
