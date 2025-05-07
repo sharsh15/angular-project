@@ -64,7 +64,7 @@ pipeline {
         stage("pushing the docker image to docker hub") {
             steps {
                 echo "Pushing Docker image to Docker Hub"
-                bat "docker push harsh1510/angular-app"
+                bat "docker push harsh1510/angular-app:version1"
             }
         }
     }
