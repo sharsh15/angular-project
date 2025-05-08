@@ -1,0 +1,2 @@
+[angular-server]
+18.215.178.156 ansible_user=ubuntu ansible_ssh_private_key_file=/mnt/d/Trycath-Devops/AWS/Devopskeypair.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'

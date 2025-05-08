@@ -1,0 +1,83 @@
+---
+- name: Install Docker on Ubuntu
+  hosts: all
+  become: yes
+  gather_facts: true  
+  tasks:
+
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install necessary dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+
+    - name: Add Docker’s official GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Verify Docker installation
+      command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Output Docker version
+      debug:
+        msg: "Docker version: {{ docker_version.stdout }}"
+
+    - name: Ensure UFW is installed
+      apt:
+        name: ufw
+        state: present
+
+    - name: Allow SSH port 22 through UFW
+      ufw:
+        rule: allow
+        port: '22'
+
+    - name: Allow TCP port 10001 through UFW
+      ufw:
+        rule: allow
+        port: '10001'
+        proto: tcp
+
+    - name: Enable UFW firewall
+      ufw:
+        state: enabled
+        policy: allow
+    
+    - name: make a directory
+      ansible.builtin.file:
+        path: /home/ubuntu/dockercompose
+        state: directory
+        mode: '0755'
+
+    - name: copy docker-compose file 
+      copy: 
+        src: /mnt/d/Trycath-Devops/Project/check-balance/docker-compose.yaml
+        dest: /home/ubuntu/dockercompose
+
