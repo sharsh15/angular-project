@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                     deleteDir()
-                    bat "git clone https://github.com/iamakashk/sample-angular-17-project.git"
+                    bat "git clone https://github.com/sharsh15/angular-project.git"
                 }
                 echo "Cloned repository successfully."
             }
