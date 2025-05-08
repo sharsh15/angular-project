@@ -5,38 +5,14 @@ pipeline {
         Base_PATH = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\angular-build\\angular-project\\sample-angular-17-project\\'
     }
 
-    tools {
-        nodejs 'nodejs-lts'
-    }
-
     stages {
         stage("Pulling code from Github") {
             steps {
                 script {
                     deleteDir()
-                    bat "git clone https://github.com/sharsh15/angular-project.git"
+                    bat "git clone https://github.com/iamakashk/sample-angular-17-project.git"
                 }
                 echo "Cloned repository successfully."
-            }
-        }
-
-        stage("Installing dependencies") {
-            steps {
-                bat """
-                    cd ${env.Base_PATH}
-                    npm install
-                    npm --version
-                """
-                echo "Dependencies installed"
-            }
-        }
-
-        stage("Building Angular App") {
-            steps {
-                 bat """
-                    cd ${env.Base_PATH} && npx ng build --configuration production
-                """
-                echo "Angular app successfully completed"
             }
         }
 
@@ -61,7 +37,7 @@ pipeline {
             }
         }
 
-        stage("pushing the docker image to docker hub") {
+        stage("Push Docker Image") {
             steps {
                 echo "Pushing Docker image to Docker Hub"
                 bat "docker push harsh1510/angular-app:version1"
