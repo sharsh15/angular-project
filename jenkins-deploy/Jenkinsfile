@@ -7,7 +7,7 @@ pipeline {
 
     environment {
       //  IMAGE_NAME_PREFIX = 'harsh1510/real-world-project:'
-        AWS_PAIR_KEY_PATH = 'D:\\Trycath-Devops\\AWS\\Devopskeypair.pem
+        AWS_PAIR_KEY_PATH = 'D:\\Trycath-Devops\\AWS\\Devopskeypair.pem'
     }
 
     stages {
